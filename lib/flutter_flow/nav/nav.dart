@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 
 import '/auth/base_auth_user_provider.dart';
 
-import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 
 import '/index.dart';
@@ -77,13 +76,13 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       refreshListenable: appStateNotifier,
       navigatorKey: appNavigatorKey,
       errorBuilder: (context, state) =>
-          appStateNotifier.loggedIn ? BienvenidoWidget() : LoginWidget(),
+          appStateNotifier.loggedIn ? BienvenidoWidget() : InicioWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
           builder: (context, _) =>
-              appStateNotifier.loggedIn ? BienvenidoWidget() : LoginWidget(),
+              appStateNotifier.loggedIn ? BienvenidoWidget() : InicioWidget(),
         ),
         FFRoute(
           name: LoginWidget.routeName,
@@ -112,6 +111,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           path: App2Widget.routePath,
           requireAuth: true,
           builder: (context, params) => App2Widget(),
+        ),
+        FFRoute(
+          name: InicioWidget.routeName,
+          path: InicioWidget.routePath,
+          builder: (context, params) => InicioWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
       observers: [routeObserver],
@@ -281,7 +285,7 @@ class FFRoute {
 
           if (requireAuth && !appStateNotifier.loggedIn) {
             appStateNotifier.setRedirectLocationIfUnset(state.uri.toString());
-            return '/login';
+            return '/inicio';
           }
           return null;
         },
@@ -295,15 +299,11 @@ class FFRoute {
                 )
               : builder(context, ffParams);
           final child = appStateNotifier.loading
-              ? Center(
-                  child: SizedBox(
-                    width: 50.0,
-                    height: 50.0,
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        FlutterFlowTheme.of(context).primary,
-                      ),
-                    ),
+              ? Container(
+                  color: Colors.transparent,
+                  child: Image.asset(
+                    'assets/images/FONDOAPP.png',
+                    fit: BoxFit.cover,
                   ),
                 )
               : page;
